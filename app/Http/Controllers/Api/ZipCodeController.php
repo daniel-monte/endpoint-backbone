@@ -11,17 +11,16 @@ class ZipCodeController extends Controller
 
     public function getZipCode($zip_code)
     {
-        if (Cache::has('zipCode')){
-            $zipCode = Cache::get('zipCode');
+        if (Cache::has($zip_code)){
+            $zipCode = Cache::get($zip_code);
         }else{
 
             $zipCode = ZipCode::where('zip_code', $zip_code)
                 ->with(['federalEntity', 'settlements.settlement_type', 'municipality'])
                 ->first();
 
-            Cache::put('zipCode', $zipCode);
+            Cache::put($zip_code, $zipCode, 15);
         }
-
             
         return $zipCode;
     }
